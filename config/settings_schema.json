@@ -116,6 +116,34 @@
         "info": "t:settings_schema.typography.settings.type_header_font.info"
       },
       {
+        "type": "select",
+        "id": "heading_type",
+        "label": "Font type",
+        "options": [
+          {
+            "value": "shopify",
+            "label": "Shopify"
+          },
+          {
+            "value": "custom",
+            "label": "Custom"
+          }
+        ],
+        "default": "custom"
+      },
+      {
+        "type": "select",
+        "id": "heading_custom",
+        "label": "Custom Font",
+        "options": [
+          {
+            "value": "F37Ginger_bold",
+            "label": "F37 Ginger (bold)"
+          }
+        ],
+        "default": "F37Ginger_bold"
+      },
+      {
         "type": "range",
         "id": "heading_scale",
         "min": 100,
@@ -135,6 +163,34 @@
         "default": "assistant_n4",
         "label": "t:settings_schema.typography.settings.type_body_font.label",
         "info": "t:settings_schema.typography.settings.type_body_font.info"
+      },
+      {
+        "type": "select",
+        "id": "text_type",
+        "label": "Font type",
+        "options": [
+          {
+            "value": "shopify",
+            "label": "Shopify"
+          },
+          {
+            "value": "custom",
+            "label": "Custom"
+          }
+        ],
+        "default": "custom"
+      },
+      {
+        "type": "select",
+        "id": "text_custom",
+        "label": "Custom font",
+        "options": [
+          {
+            "value": "F37Ginger_light",
+            "label": "F37 Ginger light"
+          }
+        ],
+        "default": "F37Ginger_light"
       },
       {
         "type": "range",
