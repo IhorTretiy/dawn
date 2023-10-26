@@ -1,0 +1,183 @@
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --background-color-post: {{ section.settings.background_color_post.red }}, {{ section.settings.background_color_post.green }}, {{ section.settings.background_color_post.blue }};
+    --button-color: {{ section.settings.button_color.red }}, {{ section.settings.button_color.green }}, {{ section.settings.button_color.blue }};
+  }
+{%- endstyle -%}
+
+{{ 'review-post.css' | asset_url | stylesheet_tag }}
+
+<div class="container">
+  {% if section.settings.title != blank %}
+    <div class="product-list-title">
+      <h1>{{ section.settings.title }}</h1>
+    </div>
+  {% endif %}
+  {% if section.blocks.size > 0 %}
+    <div class="swiper review-post-swiper">
+      <div class="swiper-wrapper review-main-container">
+        {% for block in section.blocks %}
+          {% assign product = block.settings.product %}
+          <div class="swiper-slide swiper-slide-without-margin" {{ block.shopify_attributes }}>
+            {% if block.settings.image != blank %}
+              <img
+                src="{{ block.settings.image | image_url: width: 170 }}"
+                alt="{{ block.settings.image.alt }}"
+                class="custom-slide"
+                loading="lazy"
+                width="140"
+                height="140"
+              >
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+            <div class="slide-container-review">
+              <div class="product-rating-container">
+                {% for star in (1..block.settings.star_coutn) %}
+                  {% if star <= block.settings.rating %}
+                    {% assign color = '#00AFA9' %}
+                  {% else %}
+                    {% assign color = '#FFF' %}
+                  {% endif %}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="30" viewBox="0 0 28 30" fill="none">
+                    <path d="M14.0489 2.92705C14.3483 2.00574 15.6517 2.00574 15.9511 2.92705L18.1432 9.67376C18.2771 10.0858 18.661 10.3647 19.0943 10.3647H26.1882C27.1569 10.3647 27.5597 11.6044 26.7759 12.1738L21.0369 16.3435C20.6864 16.5981 20.5397 17.0495 20.6736 17.4615L22.8657 24.2082C23.1651 25.1295 22.1106 25.8956 21.3269 25.3262L15.5878 21.1565C15.2373 20.9019 14.7627 20.9019 14.4122 21.1565L8.67312 25.3262C7.88941 25.8956 6.83493 25.1295 7.13428 24.2082L9.32642 17.4615C9.46029 17.0495 9.31363 16.5981 8.96315 16.3435L3.22405 12.1738C2.44034 11.6044 2.84311 10.3647 3.81184 10.3647H10.9057C11.339 10.3647 11.7229 10.0858 11.8568 9.67376L14.0489 2.92705Z" fill="{{ color }}"/>
+                  </svg>
+                {% endfor %}
+              </div>
+              {% if block.settings.title != blank %}
+                <div class="review-title">
+                  <h2>{{ block.settings.title }}</h2>
+                </div>
+              {% endif %}
+              {% if block.settings.description != blank %}
+                <div class="review-content">
+                  {{ block.settings.description }}
+                </div>
+              {% endif %}
+              <div class="bottom-block">
+                {% if block.settings.review_author != blank %}
+                  <div class="review-name">
+                    {{ block.settings.review_author }}
+                  </div>
+                {% endif %}
+                {% if product %}
+                  <a href="{{ product.url }}" class="reviewed-product">
+                    {% if product.featured_media != blank %}
+                      <img
+                        src="{{ product.featured_media | image_url: width: 70 }}"
+                        alt="{{ product.featured_media.alt }}"
+                        loading="lazy"
+                        width="92"
+                        height="71"
+                      >
+                    {% else %}
+                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {% endif %}
+                    <span>
+                      {{ product.title }}
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="16" viewBox="0 0 23 16" fill="none">
+                      <path d="M22.7071 8.70711C23.0976 8.31658 23.0976 7.68342 22.7071 7.29289L16.3431 0.928932C15.9526 0.538408 15.3195 0.538408 14.9289 0.928932C14.5384 1.31946 14.5384 1.95262 14.9289 2.34315L20.5858 8L14.9289 13.6569C14.5384 14.0474 14.5384 14.6805 14.9289 15.0711C15.3195 15.4616 15.9526 15.4616 16.3431 15.0711L22.7071 8.70711ZM0 9H22V7H0V9Z" fill="white"/>
+                    </svg>
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-pagination review-swiper-pagination"></div>
+    </div>
+  {% endif %}
+</div>
+
+<script src="{{ 'review-swiper.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Review post",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "color",
+      "id": "background_color_post",
+      "label": "Background color post",
+      "default": "#DFFFFD"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button color",
+      "default": "#00AFA9"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "range",
+          "id": "star_coutn",
+          "label": "Star count",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "default": 3
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Tittle",
+          "default": "Walking on Sunshine"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "text",
+          "id": "review_author",
+          "label": "Author"
+        },
+        {
+          "type": "url",
+          "id": "product_url",
+          "label": "Product link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Review post"
+    }
+  ]
+}
+{% endschema %}
